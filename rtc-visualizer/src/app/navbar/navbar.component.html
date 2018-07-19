@@ -1,26 +1,45 @@
-<nav [style.height.px]="height" class="navbar-fixed-top" role="navigation">
-    <div class="container" style="background:#1A1B26;color:white;padding:10px 10px 10px 10px;width:100%">
-        <div class="pull-left">
-            <button type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    RTC Visualizer
-            </button>
-            <a href="#">
-                <div></div>
-            </a>
-        </div>
-
-        <div class="pull-right" id="bs-example-navbar-collapse-1">
-            <div class="dropdown">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-label="Justify">
-                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+<nav class="navbar-fixed-top" role="navigation">
+    <div [style.height.px]="height" class="container bar outer-div">
+        <div class="inner-div row">
+            <div class="col-sm-2 inner-div">     
+                <button class="inner-div btn btn-default" type="button">
+                    Précédent
                 </button>
-                <ul class="dropdown-menu dropdown-menu-right">
-                <li><a href="#">Action</a></li>
-                <li class="divider"></li>
-                <li><a href="#">Separated link</a></li>
-                </ul>
+            </div>
+
+            <div class="col-sm-2"></div>
+
+            <div class="col-sm-4 inner-div" id="bs-example-navbar-collapse-1">
+                <div class="inner-div" style="text-align:center">
+                    <span class="dropdown inner-div">
+                        <button type="button" class="btn btn-default dropdown-toggle inner-div search-button" data-toggle="dropdown" aria-label="Justify">
+                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li><button type="button" class="btn btn-default">Action</button></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                        </ul>
+                    </span>
+                    <span>                        
+                        RTC
+                    </span>
+                    <span>
+                        <button class="inner-div btn btn-default" type="button">
+                            Traiter les données
+                        </button>
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-sm-2"></div>
+
+            <div class="col-sm-2 inner-div">
+                <button class="pull-right inner-div btn btn-default" type="button">
+                    Suivant
+                </button>
             </div>
         </div>
     </div>
 </nav>
-<div [style.height.px]="height + 30"></div> 
+<div [style.height.px]="height + 5"></div> 

@@ -1,0 +1,13 @@
+.btn-default {
+    background: #8C867E;
+    border-width: 0;
+    color:#FAF1E3;
+    font-weight: bold;
+    transition: background-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.btn-default:hover {
+    box-shadow: inset 0 0 0 3px #646059;
+    color: #646059;
+    background: #FAF1E3;
+}
