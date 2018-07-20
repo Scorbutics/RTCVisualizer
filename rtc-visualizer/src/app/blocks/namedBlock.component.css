@@ -1,0 +1,11 @@
+.blockBackground {
+    background: #FAF1E3;
+    border-radius: 3px;
+    border-color: #646059;
+    border-width: 1px;
+    border-style: solid;
+}
+
+.blockTitle {
+    text-align: center;
+}

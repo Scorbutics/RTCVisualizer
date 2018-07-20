@@ -1,3 +1,7 @@
+* {
+    color:#646059;
+}
+
 .btn-default {
     margin: 1px;
     background: #8C867E;
@@ -31,4 +35,14 @@
 .btn-default:focus {
     background: #8C867E;
     color:#FAF1E3;
+}
+
+.backgroundPage {
+    background: #FCF8F1;
+    height:100%;
+    width:100%;
+}
+
+.dropdown-menu {
+    background: #8C867E;
 }
