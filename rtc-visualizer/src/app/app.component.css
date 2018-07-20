@@ -1,4 +1,5 @@
 .btn-default {
+    margin: 1px;
     background: #8C867E;
     border-width: 0;
     color:#FAF1E3;
@@ -6,8 +7,23 @@
     transition: background-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 
+.btn-default:focus,
 .btn-default:hover {
     box-shadow: inset 0 0 0 3px #646059;
     color: #646059;
+    outline-color: #32302C;
     background: #FAF1E3;
+}
+
+.btn-default.active.focus, 
+.btn-default.active:focus, 
+.btn-default.focus, 
+.btn-default:active.focus, 
+.btn-default:active:focus, 
+.btn-default:focus {
+    outline-color: #32302C;
+}
+
+.btn-default:focus {
+    background: #b6b3ae;
 }
