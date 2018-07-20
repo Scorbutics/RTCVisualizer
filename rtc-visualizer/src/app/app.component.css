@@ -24,6 +24,11 @@
     outline-color: #32302C;
 }
 
+.btn-default:active {
+    background: #f6e6cd;
+}
+
 .btn-default:focus {
-    background: #b6b3ae;
+    background: #8C867E;
+    color:#FAF1E3;
 }
