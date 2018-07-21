@@ -11,6 +11,7 @@ import { NamedBlockComponent } from './blocks/namedBlock.component';
 import { PageTitleComponent } from './pages/pageTitle/pageTitle.component';
 import { PiPageComponent } from './pages/piPage/piPage.component';
 import { PageTitleService } from './pages/pageTitle/pageTitle.service';
+import {TimelineComponent} from './timeline/timeline.component';
 
 const routes: Routes = [
 	//TODO
@@ -30,7 +31,8 @@ const routes: Routes = [
 		PageTitleComponent,
 		UsPageComponent,
 		PiPageComponent,
-		NamedBlockComponent
+		NamedBlockComponent,
+		TimelineComponent
 	],
 	imports: [
 		NgbModule.forRoot(),
