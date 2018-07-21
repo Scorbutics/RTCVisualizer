@@ -10,6 +10,11 @@
 	width:50px;
 }
 
+.navElement {
+    max-width: 100%;
+    padding: 0 5px;
+}
+
 .bar {
 	border-style: solid;
 	border-color: #C8C0B5;

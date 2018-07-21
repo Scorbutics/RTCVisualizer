@@ -38,9 +38,11 @@
 }
 
 .backgroundPage {
-    background: #FCF8F1;
+    padding: 0 50px;
     height:100%;
-    width:100%;
+    max-width: 1280px;
+    border: 1px solid #e7e7e7;
+    box-shadow: 0 2px 5px #646059;
 }
 
 .dropdown-menu {
