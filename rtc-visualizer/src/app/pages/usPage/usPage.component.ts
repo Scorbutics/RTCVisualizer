@@ -1,4 +1,5 @@
 import { Component  } from '@angular/core';
+import { PageTitleService } from '../pageTitle/pageTitle.service';
 
 @Component({
 	selector: 'us-page',
@@ -6,5 +7,9 @@ import { Component  } from '@angular/core';
 	styleUrls: ['./usPage.component.css']
 })
 export class UsPageComponent {
-	usName:string = "US Mise en place du top déploiement";
+	private usName:string = "US Mise en place du top déploiement";
+
+	constructor(private pageTitleService: PageTitleService) { 
+		pageTitleService.changeTitle(this.usName);
+	}
 }

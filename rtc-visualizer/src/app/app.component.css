@@ -38,9 +38,9 @@
 }
 
 .backgroundPage {
-    padding: 0 50px;
+    padding: 0 20px 10px;
     height:100%;
-    max-width: 1280px;
+    max-width: 1580px;
     border: 1px solid #e7e7e7;
     box-shadow: 0 2px 5px #646059;
 }

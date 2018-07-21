@@ -10,16 +10,17 @@ import { UsPageComponent } from './pages/usPage/usPage.component';
 import { NamedBlockComponent } from './blocks/namedBlock.component';
 import { PageTitleComponent } from './pages/pageTitle/pageTitle.component';
 import { PiPageComponent } from './pages/piPage/piPage.component';
+import { PageTitleService } from './pages/pageTitle/pageTitle.service';
 
 const routes: Routes = [
-	{ path: '', redirectTo: 'login', pathMatch: 'full' },
-	{ path: '**', redirectTo: 'login'},
-	
 	//TODO
 	{ path: 'login', redirectTo: 'us'},
 
 	{ path: 'us', component: UsPageComponent },
-	{ path: 'pi', component: PiPageComponent }
+	{ path: 'pi', component: PiPageComponent },
+	
+	{ path: '', redirectTo: 'us', pathMatch: 'full' },
+	{ path: '**', redirectTo: 'us'}
 ];
 
 @NgModule({
@@ -36,7 +37,9 @@ const routes: Routes = [
 		RouterModule.forRoot(routes),
 		BrowserModule
 	],
-	providers: [],
+	providers: [
+		PageTitleService
+	],
 	bootstrap: [AppComponent]
 })
 export class AppModule { }

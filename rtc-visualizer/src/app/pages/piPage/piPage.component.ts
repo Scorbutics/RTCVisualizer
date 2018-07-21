@@ -1,4 +1,5 @@
-import { Component  } from '@angular/core';
+import { Component, Inject  } from '@angular/core';
+import { PageTitleService } from '../pageTitle/pageTitle.service';
 
 @Component({
 	selector: 'pi-page',
@@ -6,5 +7,10 @@ import { Component  } from '@angular/core';
 	styleUrls: ['./piPage.component.css']
 })
 export class PiPageComponent {
-	piName:string = "PI Eté";
+	private piName:string = "PI Eté";
+
+	constructor(private pageTitleService: PageTitleService) { 
+		pageTitleService.changeTitle(this.piName);
+	}
+	
 }

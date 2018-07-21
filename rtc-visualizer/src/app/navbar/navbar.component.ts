@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef, HostBinding } from '@angular/core';
 
 @Component({
 	selector: 'nav-bar',
@@ -7,7 +7,9 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
 
+	@HostBinding('style.height.px')
 	height:number = 70;
+	
 	collapse:boolean = true;
 	
 	constructor(private navbarElement:ElementRef) {
