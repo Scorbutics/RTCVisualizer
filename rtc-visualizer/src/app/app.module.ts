@@ -12,6 +12,7 @@ import { PageTitleComponent } from './pages/pageTitle/pageTitle.component';
 import { PiPageComponent } from './pages/piPage/piPage.component';
 import { PageTitleService } from './pages/pageTitle/pageTitle.service';
 import {TimelineComponent} from './timeline/timeline.component';
+import {TimelineEntryComponent} from './timeline/timelineEntry.component';
 
 const routes: Routes = [
 	//TODO
@@ -32,7 +33,8 @@ const routes: Routes = [
 		UsPageComponent,
 		PiPageComponent,
 		NamedBlockComponent,
-		TimelineComponent
+		TimelineComponent,
+		TimelineEntryComponent
 	],
 	imports: [
 		NgbModule.forRoot(),
