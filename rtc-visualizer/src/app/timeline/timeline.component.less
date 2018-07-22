@@ -2,11 +2,12 @@
 
 @cardColor: @themeColorArea;
 @lineColor : @themeColorOutline;
-@chipBorder : @themeColorWriting;
+@chipBorder : @themeColorHighlight;
+@textColor : @themeColorWriting;
 
 * {
 	box-sizing: border-box;
-	color: @themeColorWriting;
+	color: @textColor;
 }
 
 /* The actual timeline (the vertical ruler) */
@@ -42,7 +43,7 @@
 	width: 25px;
 	height: 25px;
 	right: -17px;
-	background-color: @themeColorDarkBackground;
+	background-color: @cardColor;
 	border: 4px solid @chipBorder;
 	top: 15px;
 	border-radius: 30%;

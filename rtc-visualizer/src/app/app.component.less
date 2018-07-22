@@ -2,6 +2,7 @@
 
 * {
     color: @themeColorWriting;
+    padding: 0;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -10,12 +11,12 @@ h1, h2, h3, h4, h5, h6 {
 
 .btn-default {
     margin: 1px;
-    background: @themeColorBackground;
-    color: @themeColorLightBackground;
+    background: @themeColorButtonBackground;
+    color: @themeColorButton;
     border-width : 0 0 2px 0;
     border-style: solid;
     border-radius : 0;
-    border-color: @themeColorLightBackground;
+    border-color: @themeColorButton;
     font-weight: bold;
     transition: background-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
@@ -23,10 +24,10 @@ h1, h2, h3, h4, h5, h6 {
 .btn-default:focus,
 .btn-default:hover {
     border-width : 0;
-    box-shadow: inset 0 0 0 3px @themeColorWriting;
-    color: @themeColorWriting;
+    box-shadow: inset 0 0 0 3px @themeColorHighlight;
+    color: @themeColorHighlight;
     outline-color: @themeColorOutline;
-    background: @themeColorBackground;
+    background: @themeColorButtonBackground;
 }
 
 .btn-default.active.focus, 
@@ -48,11 +49,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .backgroundPage {
+    margin-top : 20px;
     padding: 0 20px 10px;
     height:100%;
     max-width: 1580px;
     box-shadow: 0 2px 5px @themeColorOutline;
-    background-color : @themeColorBackground;
+    background-color : @themeColorSheetBackground;
 }
 
 .dropdown-menu {
@@ -60,9 +62,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 body {
-    background-color : @themeColorDarkBackground
+    background-color : @themeColorBackground
 }
 
 .pageTitleElement >* {
-    background-color : @themeColorBackground;
+    background-color : @themeColorSheetBackground;
 }

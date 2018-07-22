@@ -4,22 +4,43 @@
 	height: 50px;
 }
 
-.inner-div {
-	height:100%;
+.bar-row {
+	margin : 0;
+	width:100%;
 }
 
-.search-button {
+.inner-div {
+	height:100%;
+	padding : 0;
+}
+
+.inner-div>button {
 	width:50px;
 }
 
 .navElement {
-    max-width: 100%;
     padding: 0;
 }
 
+.hamburger {
+	display: none;
+}
+
 .bar {
-	background: @themeColorBackground;
+	background: @themeColorSheetBackground;
 	box-shadow: 0 4px 2px -2px @themeColorOutline;
 	width:100%;
 	padding-bottom: 1px;
+}
+
+/* Collapsed mode on screens less than 600px wide */
+@media screen and (max-width: 600px) {
+	.center-commands {
+		display:none;
+	}
+
+	.hamburger {
+		display:block;
+		width: 100px !important;
+	}
 }
