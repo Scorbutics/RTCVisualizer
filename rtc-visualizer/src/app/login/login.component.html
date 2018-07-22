@@ -1,0 +1,17 @@
+<h1>Log in</h1>
+
+<div id="authentification-error" class="alert alert-danger" *ngIf="authenticationFailed">
+  Nope, try again
+</div>
+
+<form (ngSubmit)="authenticate()" #userForm="ngForm">
+    <div class="form-group">
+      <label for="login" id="login-label">Login</label>
+      <input id="login" class="form-control" name="login" [(ngModel)]="credentials.login" required>
+    </div>
+    <div class="form-group">
+      <label for="password" id="password-label">Login</label>
+      <input id="password" class="form-control" name="password" [(ngModel)]="credentials.password" required>
+    </div>
+ <button class="btn btn-primary" type="submit" [disabled]="userForm.invalid">Let's Go!</button>
+</form>

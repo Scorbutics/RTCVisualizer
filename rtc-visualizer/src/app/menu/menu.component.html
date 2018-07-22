@@ -1,0 +1,26 @@
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+  <a class="navbar-brand" href="" routerLink="/">RTC Visualizer</a>
+  <button type="button" class="navbar-toggler navbar-toggler-right" (click)="toggleNavbar()">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div id="navbar" class="navbar-collapse justify-content-end" [class.collapse]="navbarCollapsed" >
+    <ul class="navbar-nav mr-auto ">
+      <li class="nav-item">
+        <a class="nav-link" href="" routerLink='/'>Login</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="" routerLink='/data'>Traitement des données</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="" routerLink='/detail'>Détail d'un artefact</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="" routerLink='/kanban'>Avancement</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="" routerLink='/stats'>Statistiques</a>
+      </li>
+    </ul>
+  </div>
+
+</nav>
