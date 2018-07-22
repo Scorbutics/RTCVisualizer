@@ -8,7 +8,7 @@ import { Title } from '@angular/platform-browser';
 })
 export class DetailArtefactComponent implements OnInit {
   constructor(title: Title) {
-    title.setTitle("RTC Visualizer - Détail de l'artefact");
+    title.setTitle('RTC Visualizer - Détail artefact');
   }
 
   ngOnInit() {}
