@@ -12,7 +12,7 @@ export class TimelineEntryComponent {
     @HostBinding('class.right') 
     private rightClass: boolean = true;
 
-    private date:string = "21";
-    private text:string = "Lorem ipsum";
+    private date:string = "99 septembre";
+    private text:string = "Lorem ipsum sdfljlsdf jfjuuf usufu iuoisydf ?... fsdiufy uizeyfius ttfsdf ! sdfy iusdfs dfsf eezrzer errr. sdfj, re ?";
 
 }
