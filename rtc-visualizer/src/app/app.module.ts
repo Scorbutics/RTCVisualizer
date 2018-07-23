@@ -13,6 +13,7 @@ import { PiPageComponent } from './pages/piPage/piPage.component';
 import { PageTitleService } from './pages/pageTitle/pageTitle.service';
 import {TimelineComponent} from './timeline/timeline.component';
 import {TimelineEntryComponent} from './timeline/timelineEntry.component';
+import {CardComponent} from './cards/card.component';
 
 const routes: Routes = [
 	//TODO
@@ -34,7 +35,8 @@ const routes: Routes = [
 		PiPageComponent,
 		NamedBlockComponent,
 		TimelineComponent,
-		TimelineEntryComponent
+		TimelineEntryComponent,
+		CardComponent
 	],
 	imports: [
 		NgbModule.forRoot(),

@@ -44,7 +44,7 @@
 }
 
 /* Add arrows to the right container (pointing left) */
-.right::before {
+/*.right::before {
 	content: " ";
 	height: 0;
 	position: absolute;
@@ -55,7 +55,7 @@
 	border: medium solid @cardColor;
 	border-width: 10px 10px 10px 0;
 	border-color: transparent @cardColor transparent transparent;
-}
+}*/
 
 
 .right {
@@ -86,12 +86,12 @@
 	}
 
 /* Make sure that all arrows are pointing leftwards */
-	.container::before {
+	/*.container::before {
 		left: 10px;
 		border: medium solid @cardColor;
 		border-width: 10px 10px 10px 0;
 		border-color: transparent @cardColor transparent transparent;
-	}
+	}*/
 
 /* Make all right containers behave like the left ones */
 	.right {
@@ -99,7 +99,7 @@
 		margin-right: 0;
 	}
 
-	.right::before {
+	/*.right::before {
 		content: " ";
 		height: 0;
 		position: absolute;
@@ -110,7 +110,7 @@
 		border: medium solid @cardColor;
 		border-width: 10px 10px 10px 0;
 		border-color: transparent @cardColor transparent transparent;
-	}
+	}*/
 	
 	.right:nth-child(1) {
 		margin-left: 25px;

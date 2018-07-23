@@ -8,18 +8,24 @@
 @textColor : @themeColorWriting;
 @dateColor : @themeColorOutline;
 
-/* The actual content */
-.content {
-	margin-left:20px;
-	padding: 10px 10px;
-	background-color: @cardColor;
-	position: relative;
-	border-radius: 6px;
-	min-width: 50px;
+.itemCardContainer {
+	margin-left: 10px;
+	display:flex;
+	flex-wrap: wrap;
+	align-items : center ; /* for vertical aligning */
+}
 
-	@media screen and (max-width: @responsiveWidth) {
-		margin-left:80px;
-	}
+.itemCard {
+	background-color:@cardColor;
+	padding-left: 3px;
+	text-overflow: ellipsis;
+	word-wrap: break-word;
+	overflow: hidden;
+	font-size:smaller;
+    width: 100px;
+    height: 100px;
+	margin-left: 10px;
+	margin-top:5px;
 }
 
 .datePoint{
