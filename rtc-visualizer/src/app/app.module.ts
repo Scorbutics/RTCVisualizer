@@ -4,6 +4,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Routes, RouterModule } from "@angular/router";
 
 //User defined
+//TODO plusieurs modules
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { UsPageComponent } from './pages/usPage/usPage.component';
@@ -14,6 +15,8 @@ import { PageTitleService } from './pages/pageTitle/pageTitle.service';
 import {TimelineComponent} from './timeline/timeline.component';
 import {TimelineEntryComponent} from './timeline/timelineEntry.component';
 import {CardComponent} from './cards/card.component';
+import {CardDeckComponent} from './cards/cardDeck.component';
+
 
 const routes: Routes = [
 	//TODO
@@ -36,7 +39,8 @@ const routes: Routes = [
 		NamedBlockComponent,
 		TimelineComponent,
 		TimelineEntryComponent,
-		CardComponent
+		CardComponent,
+		CardDeckComponent
 	],
 	imports: [
 		NgbModule.forRoot(),

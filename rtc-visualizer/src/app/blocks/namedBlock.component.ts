@@ -1,4 +1,4 @@
-import { Component  } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
 	selector: 'named-block',
@@ -6,5 +6,6 @@ import { Component  } from '@angular/core';
 	styleUrls: ['./namedBlock.component.less']
 })
 export class NamedBlockComponent {
+	@Input()
 	name:string = "Tâches";
 }

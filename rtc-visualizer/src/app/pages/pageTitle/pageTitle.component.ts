@@ -9,7 +9,7 @@ import {PageTitleService} from './pageTitle.service';
 })
 export class PageTitleComponent {
 
-    title:string = "RTC";
+    title:string;
 
     constructor(private service: PageTitleService) {
     }

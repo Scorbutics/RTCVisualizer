@@ -2,40 +2,50 @@
 
 @responsiveWidth : 770px;
 
-@cardColor: @themeColorArea;
+@chipColor: @themeColorArea;
 @lineColor : @themeColorOutline;
 @chipBorder : @themeColorHighlight;
 @textColor : @themeColorWriting;
 @dateColor : @themeColorOutline;
 
 .itemCardContainer {
-	margin-left: 10px;
-	display:flex;
-	flex-wrap: wrap;
-	align-items : center ; /* for vertical aligning */
+	margin-left: 15px;
+
+	@media screen and (max-width: @responsiveWidth) {
+		margin-left : 70px;
+	}
 }
 
-.itemCard {
-	background-color:@cardColor;
-	padding-left: 3px;
-	text-overflow: ellipsis;
-	word-wrap: break-word;
-	overflow: hidden;
-	font-size:smaller;
-    width: 100px;
-    height: 100px;
+/* Container around content */
+.container {
+	padding: 10px 10px 10px 20px;
+	position: relative;
+}
+
+/* Orange date on timeline */
+.right {
+	left: 3px;
+	height:90px;
 	margin-left: 10px;
-	margin-top:5px;
+	padding:0;
+
+	@media screen and (max-width: @responsiveWidth) {
+		margin-left: 25px;
+	}
+}
+
+:host {
+	&:extend(.container);
+	&:extend(.right);
 }
 
 .datePoint{
 	position: absolute;
 	right: 0px;
 	color : @dateColor;
-	background-color: @cardColor;
-	border: 4px solid @chipBorder;
+	background-color: @chipColor;
+	border: 2px solid @chipBorder;
 	top: 30px;
-	border-radius: 10%;
 	z-index: 1;
 	width: 90px;
 	font-size: smaller;
