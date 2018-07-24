@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Routes, RouterModule } from "@angular/router";
+import { HttpClientModule } from '@angular/common/http';
 
 //User defined
 //TODO plusieurs modules
@@ -17,6 +18,7 @@ import {TimelineEntryComponent} from './timeline/timelineEntry.component';
 import {CardComponent} from './cards/card.component';
 import {CardDeckComponent} from './cards/cardDeck.component';
 
+import { UsService } from './pages/usPage/service/us.service';
 
 const routes: Routes = [
 	//TODO
@@ -45,10 +47,12 @@ const routes: Routes = [
 	imports: [
 		NgbModule.forRoot(),
 		RouterModule.forRoot(routes),
-		BrowserModule
+		BrowserModule,
+		HttpClientModule
 	],
 	providers: [
-		PageTitleService
+		PageTitleService,
+		UsService
 	],
 	bootstrap: [AppComponent]
 })
