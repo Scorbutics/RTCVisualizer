@@ -4,7 +4,7 @@ import { PageTitleService } from '../pageTitle/pageTitle.service';
 @Component({
 	selector: 'us-page',
 	templateUrl: './usPage.component.html',
-	styleUrls: ['./usPage.component.css']
+	styleUrls: ['./usPage.component.less']
 })
 export class UsPageComponent {
 	private usName:string = "US Mise en place du top déploiement";
