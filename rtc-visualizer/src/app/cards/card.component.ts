@@ -11,5 +11,5 @@ export class CardComponent {
 
     @HostBinding('style.background-color')
     @Input()
-    color:string = "white";
+    color:string = "#eeeeee";
 }
