@@ -1,47 +1,53 @@
 
 
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-
+import { from } from 'rxjs';
+import { LoginService } from './login.service';
+import { RtcQueryBuilderService } from './rtcQueryBuilder.service';
  
-const httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+let httpOptions = {
+    headers: new HttpHeaders({ 
+        'Access-Control-Allow-Origin' : '*',
+        'Accept' : '*/*',
+        'Accept-Language' : 'fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7'
+    })
 };
  
 @Injectable()
 export class UsService {
  
-    constructor(private http:HttpClient) {}
+    constructor(private http:HttpClient, private loginService: LoginService, private builder: RtcQueryBuilderService) {}
  
     //TODO http request interceptor for base URL
-    private host = "";
+    private host = "http://localhost:1337";
+    private root = "/api/";
 
-    private root = "/ccm/rpt/repository/";
+    private hostTarget = "https://ccm001-jazzx.sii24.pole-emploi.intra:9443/ccm";
+    private rootTarget = "/rpt/repository/";
 
-    private buildFilterRequest(filterMap:Map<string, string>) : string {
-        let result = "";
-        const separator = "=";
-        const valueEnglober = '"';
-        filterMap.forEach((value, key) => { 
-            result += key + separator + valueEnglober + value + valueEnglober + " and ";
+    getAllUs(team: string, sprint?: string, state?: string) {
+       const finalURL = this.hostTarget + this.rootTarget + 
+        'workitem?fields='+ this.builder.query("workitem")
+            .value("workItem", 
+                this.builder.expression()
+                .criteria("type/id", "=", "com.ibm.team.apt.workItemType.story")
+                .maybe(state != null && state.length > 0)
+                .and.criteria("state/id", "=", "com.ibm.team.apt.storyWorkflow.state." + state)
+                .and.criteria("projectArea/name", "=", team)
+                .maybe(sprint != null && sprint.length > 0)
+                .and.criteria("target/name", "=", "Sprint " + sprint)
+            )
+            .resource("")
+            .value("id")
+            .value("summary")
+            .value("state/id")
+            .stealContent() + '&size=5000';
+        
+        return this.http.post(this.host + this.root, {
+            url : finalURL
         });
-        return '[' + result.substr(0, result.length - " and ".length) + ']';
-    }
-
-    getAllUs(team:string, sprints:number[])  {
-        if(team == null || sprints == null || sprints.length == 0) {
-            return null;
-        }
-
-        //TODO un querybuilder RTC (c'est + sexy et flexible qu'une simple Map)
-        //Ex : query.filter(key, value).and.filter(key2, value2).or.filter(key3, value3) ...
-        const filterMap = new Map<string, string>();
-        filterMap.set('type/id', 'com.ibm.team.apt.workItemType.story');
-        filterMap.set('team', team);
-        filterMap.set('state/name', 'New');
-        const finalURL = 'workitem?fields=workitem/workItem'+ this.buildFilterRequest(filterMap);
-        console.log(finalURL);
-        return this.http.get(finalURL);
     }
 }
+
 

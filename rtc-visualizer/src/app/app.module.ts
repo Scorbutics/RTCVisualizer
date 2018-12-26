@@ -19,6 +19,9 @@ import {CardComponent} from './cards/card.component';
 import {CardDeckComponent} from './cards/cardDeck.component';
 
 import { UsService } from './pages/usPage/service/us.service';
+import {LoginService} from './pages/usPage/service/login.service';
+import { CookieService } from 'angular2-cookie/services/cookies.service';
+import { RtcQueryBuilderService } from './pages/usPage/service/rtcQueryBuilder.service';
 
 const routes: Routes = [
 	//TODO
@@ -52,7 +55,10 @@ const routes: Routes = [
 	],
 	providers: [
 		PageTitleService,
-		UsService
+		UsService,
+		LoginService,
+		CookieService,
+		RtcQueryBuilderService
 	],
 	bootstrap: [AppComponent]
 })
