@@ -9,7 +9,6 @@ export class CardComponent {
     @Input()
     title:string = "";
 
-    @HostBinding('style.background-color')
     @Input()
     color:string = "#eeeeee";
 }

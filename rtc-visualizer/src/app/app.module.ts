@@ -18,20 +18,20 @@ import {TimelineEntryComponent} from './timeline/timelineEntry.component';
 import {CardComponent} from './cards/card.component';
 import {CardDeckComponent} from './cards/cardDeck.component';
 
-import { UsService } from './pages/usPage/service/us.service';
+import { RtcService } from './pages/usPage/service/rtc.service';
 import {LoginService} from './pages/usPage/service/login.service';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 import { RtcQueryBuilderService } from './pages/usPage/service/rtcQueryBuilder.service';
 
 const routes: Routes = [
 	//TODO
-	{ path: 'login', redirectTo: 'us'},
+	{ path: 'login', redirectTo: 'iteration/current'},
 
-	{ path: 'us', component: UsPageComponent },
+	{ path: 'iteration/:id', component: UsPageComponent },
 	{ path: 'pi', component: PiPageComponent },
 	
-	{ path: '', redirectTo: 'us', pathMatch: 'full' },
-	{ path: '**', redirectTo: 'us'}
+	{ path: '', redirectTo: 'iteration/current', pathMatch: 'full' },
+	{ path: '**', redirectTo: 'iteration/current'}
 ];
 
 @NgModule({
@@ -55,7 +55,7 @@ const routes: Routes = [
 	],
 	providers: [
 		PageTitleService,
-		UsService,
+		RtcService,
 		LoginService,
 		CookieService,
 		RtcQueryBuilderService

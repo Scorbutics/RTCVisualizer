@@ -8,11 +8,16 @@ class RtcQueryExpressionBuilder {
     constructor(private build: string, private valid = true) {}
     
     criteria(key: string, operator: string, value: any): RtcQueryFilterBuilder {
-        if(this.valid) {
+        if(this.valid && key != null && operator != null && value != null) {
             const separator = RtcQueryExpressionBuilder.ValueSeparator[typeof value] == undefined ? "" : RtcQueryExpressionBuilder.ValueSeparator[typeof value];
-            this.build += key + operator + separator + value + separator;
+            this.build += key + operator + separator + encodeURI(value) + separator;
         }
         return new RtcQueryFilterBuilder(this);
+    }
+
+    maybe(condition: boolean): RtcQueryExpressionBuilder {
+        this.valid = condition;
+        return this;
     }
 
     stealContent(): string {
@@ -79,17 +84,17 @@ class RtcQueryBuilder {
 
     private static ResourceSeparator = "/";
 
-    private build: string;
+    private buildStr: string;
     private valueBuild: string = "";
     private state = RtcQueryState.Resource;
     private multipleValuesTrigger = RtcQueryValueState.Unique;
 
     constructor(baseResource: string) {
-        var lastChar = baseResource.length > 0 ? baseResource[baseResource.length - 1] : "";
+        var lastChar = baseResource.length > 0 ? baseResource[baseResource.length - 1] : RtcQueryBuilder.ResourceSeparator;
         if(lastChar != RtcQueryBuilder.ResourceSeparator) {
             baseResource += RtcQueryBuilder.ResourceSeparator;
         }
-        this.build = baseResource;
+        this.buildStr = baseResource;
     }
 
     private toValueState(isFirstValue: boolean) {
@@ -101,10 +106,10 @@ class RtcQueryBuilder {
     }
 
     private toResourceState() {
-        this.build += this.valueBuild;
+        this.buildStr += this.valueBuild;
         this.valueBuild = "";
         if(this.state == RtcQueryState.Value && this.multipleValuesTrigger == RtcQueryValueState.Multiple) {
-            this.build += RtcQueryBuilder.MultipleValuesPartSeparatorEnd;
+            this.buildStr += RtcQueryBuilder.MultipleValuesPartSeparatorEnd;
         }
         this.multipleValuesTrigger = RtcQueryValueState.Unique;
         this.state = RtcQueryState.Resource;
@@ -124,19 +129,19 @@ class RtcQueryBuilder {
     }
 
     sub(value: RtcQueryBuilder): RtcQueryBuilder {
-        return this.append(value.stealContent());
+        return this.append(value.build());
     }
 
-    resource(resource: string): RtcQueryBuilder {
+    resource(): RtcQueryBuilder {
         this.toResourceState();
-        this.build += RtcQueryBuilder.ResourceSeparator + resource;
+        this.buildStr += RtcQueryBuilder.ResourceSeparator;
         return this;
     }
 
-    stealContent(): string {
+    build(): string {
         this.toResourceState();
-        let output = this.build;
-        this.build = "";
+        let output = this.buildStr;
+        this.buildStr = "";
         return output;
     }
 }

@@ -1,27 +1,11 @@
-<div class="row" >
-	<named-block class="col-md-5" name="Tâches">
-		<timeline>
-		</timeline>
-	</named-block>
-	<named-block class="col-md-2" name="Dépendances">
-		<card-deck>
-			<card><p>Maquette</p></card>
-			<card><p>Attente livraison service</p></card>
-		</card-deck>
-	</named-block>
-	<named-block class="col-md-5" name="Critères d'acceptation">
-		<card-deck>
-			Blabalbal blablabla bal bal bal blblblablbalba
-		</card-deck>
-	</named-block>
+<div class="row" *ngIf="(usSprint | async) as usSync; else loading">
+	<ng-container *ngIf="usSync.length; else noItems">
+		<card *ngFor="let us of usSync" [className]="getClassFromUsState(us.state)">
+			{{us.category?.name}}
+			<p>{{us.type}}
+			{{us.id}} - {{us.summary}}</p>
+		</card>
+	</ng-container>
+	<ng-template #noItems>No Items!</ng-template>
 </div>
-<named-block name="Soeurs">
-	<card-deck>
-		<card><p>Maquette</p></card>
-		<card><p>Attente livraison service</p></card>
-		<card><p>Attente livraison service</p></card>
-		<card><p>Attente livraison service</p></card>
-		<card><p>Attente livraison service</p></card>
-		<card><p>Attente livraison service</p></card>
-	</card-deck>
-</named-block>
+<ng-template #loading>Loading data...</ng-template>
