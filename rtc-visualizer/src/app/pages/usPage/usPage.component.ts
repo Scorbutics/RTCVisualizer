@@ -22,9 +22,10 @@ export class UsPageComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.usSprint = this.route.paramMap.pipe(
-			switchMap((params: ParamMap) =>
-				this.rtcService.getAllUs('D2IA - Delivery', params.get('id'), 'PO Diag-ACC T2C')
-		));
+			switchMap((pathParams: ParamMap) =>
+				this.route.queryParamMap.pipe(switchMap((queryParams: ParamMap) =>
+				this.rtcService.getAllUs('D2IA - Delivery', pathParams.get('iterationid'), queryParams.get('team'))
+		))));
 	}
 
 	constructor(private rtcService: RtcService, private route: ActivatedRoute) { }

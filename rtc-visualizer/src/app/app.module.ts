@@ -25,13 +25,13 @@ import { RtcQueryBuilderService } from './pages/usPage/service/rtcQueryBuilder.s
 
 const routes: Routes = [
 	//TODO
-	{ path: 'login', redirectTo: 'iteration/current'},
+	{ path: 'login', redirectTo: ''},
 
-	{ path: 'iteration/:id', component: UsPageComponent },
+	{ path: 'iterations/:iterationid', component: UsPageComponent },
 	{ path: 'pi', component: PiPageComponent },
 	
-	{ path: '', redirectTo: 'iteration/current', pathMatch: 'full' },
-	{ path: '**', redirectTo: 'iteration/current'}
+	{ path: '', redirectTo: '', pathMatch: 'full' },
+	{ path: '**', redirectTo: ''}
 ];
 
 @NgModule({
