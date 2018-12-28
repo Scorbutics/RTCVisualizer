@@ -25,35 +25,11 @@ export class RtcService {
     private rootTarget = "/rpt/repository/";
 
     getTeamArea(team?: string) {
-        const finalURL = this.hostTarget + this.rootTarget + 
-         'foundation?fields='+ this.builder.query("teamArea")
-             .value("teamArea", this.builder.expression().maybe(team != undefined).criteria("name", "=", team))
-             .resource()
-             .value("name")
-             .value("qualifiedName")
-             .value("teamMembers/name")
-             .value("projectArea")
-             .value("parentTeamArea/name")
-             .build() + '&size=1000';
-         
-         return this.http.post(this.host + this.root, {
-             url : finalURL
-         });
-     }
-
-     getAllCategories() {
-        const finalURL = this.hostTarget + this.rootTarget + 
-         'workitem?fields='+ this.builder.query("workitem")
-             .value("category")
-             .resource()
-             .value("id")
-             .value("name")
-             .value("qualifiedName")
-             .build() + '&size=1000';
-         
-         return this.http.post(this.host + this.root, {
-             url : finalURL
-         });
+        return this.builder.query(this.hostTarget + this.rootTarget + 'foundation?fields='+ "teamArea")
+             .valueSub(this.builder.query("teamArea", this.builder.expression().maybe(team != undefined).criteria("name", "=", team))
+                .value("name", "qualifiedName", "teamMembers/name", "projectArea", "parentTeamArea/name")
+             ).parameter("size", 1000)
+        .send("post", this.host + this.root);
      }
 
      private formatCategoryName(categoryName: string) {
@@ -74,34 +50,25 @@ export class RtcService {
      }
 
     getAllUs(project: string, sprint: string, team?: string, state?: string): Observable<UsItem[]> {
-       const finalURL = this.hostTarget + this.rootTarget + 
-        'workitem?fields='+ this.builder.query("workitem")
-            .value("workItem", 
+        const observableUsRequest = this.builder.query(
+                this.hostTarget + this.rootTarget + "workitem?fields=workitem/workItem", 
                 this.builder.expression()
-                .criteria("type/id", "=", "com.ibm.team.apt.workItemType.story")
-                .maybe(state != null && state.length > 0)
-                .and.criteria("state/id", "=", "com.ibm.team.apt.storyWorkflow.state." + state)
-                .and.criteria("projectArea/name", "=", project)
-                .and.criteria("target/name", "=", "Sprint " + sprint)
-            )
-            .resource()
-            .value("id")
-            .value("summary")
-            .value("state/id")
-            .value("category/name")
-            .value("teamArea/name")
-            .sub(this.builder.query("parent").value("id").value("summary"))
-            .sub(this.builder.query("")
-                .value("allExtensions", this.builder.expression()
-                .criteria("key", "=", "com.ibm.team.workitem.attribute.storyPointsNumeric")
-                .or.criteria("key", "=", "com.ibm.team.workitem.attribute.safeWorkType"))
-                .resource()
-                .value("key")
-                .value("displayValue"))
-            .build() + '&size=5000';
-        const observableUsRequest = (<Observable<WorkItemContainerRoot>> this.http.post(this.host + this.root, {
-            url : finalURL
-        }));
+                    .criteria("type/id", "=", "com.ibm.team.apt.workItemType.story")
+                    .maybe(state != null && state.length > 0)
+                    .and.criteria("state/id", "=", "com.ibm.team.apt.storyWorkflow.state." + state)
+                    .and.criteria("projectArea/name", "=", project)
+                    .and.criteria("target/name", "=", "Sprint " + sprint)
+                )
+                .value("id", "summary", "state/id", "category/name", "teamArea/name")
+                .valueSub(this.builder.query("parent").value("id", "summary"))
+                .valueSub(this.builder.query("allExtensions", this.builder.expression()
+                        .criteria("key", "=", "com.ibm.team.workitem.attribute.storyPointsNumeric")
+                        .or.criteria("key", "=", "com.ibm.team.workitem.attribute.safeWorkType"))
+                    .value("key", "displayValue")
+                )
+            .parameter("size", 5000)
+            .send<WorkItemContainerRoot>("post", this.host + this.root);
+
         return observableUsRequest.pipe(map((value, index) => { 
             if(value.data.workitem.workItem == undefined) {
                 return [];

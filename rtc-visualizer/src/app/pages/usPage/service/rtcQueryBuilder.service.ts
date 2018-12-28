@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { HttpHeaders, HttpParams, HttpClient, HttpRequest, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 class RtcQueryExpressionBuilder {
     private static ValueSeparator = {
@@ -10,7 +12,7 @@ class RtcQueryExpressionBuilder {
     criteria(key: string, operator: string, value: any): RtcQueryFilterBuilder {
         if(this.valid && key != null && operator != null && value != null) {
             const separator = RtcQueryExpressionBuilder.ValueSeparator[typeof value] == undefined ? "" : RtcQueryExpressionBuilder.ValueSeparator[typeof value];
-            this.build += key + operator + separator + encodeURI(value) + separator;
+            this.build += key + operator + separator + encodeURIComponent(value) + separator;
         }
         return new RtcQueryFilterBuilder(this);
     }
@@ -73,7 +75,6 @@ enum RtcQueryValueState {
     Unique,
     Multiple
 }
-
 class RtcQueryBuilder {
     private static FilterPartSeparatorStart = "[";
     private static FilterPartSeparatorEnd = "]";
@@ -84,17 +85,20 @@ class RtcQueryBuilder {
 
     private static ResourceSeparator = "/";
 
-    private buildStr: string;
+    private static ParameterSeparator = "&";
+    private static ParameterKeyValueSeparator = "=";
+
+    private buildStr: string = "";
     private valueBuild: string = "";
     private state = RtcQueryState.Resource;
     private multipleValuesTrigger = RtcQueryValueState.Unique;
 
-    constructor(baseResource: string) {
-        var lastChar = baseResource.length > 0 ? baseResource[baseResource.length - 1] : RtcQueryBuilder.ResourceSeparator;
-        if(lastChar != RtcQueryBuilder.ResourceSeparator) {
-            baseResource += RtcQueryBuilder.ResourceSeparator;
-        }
-        this.buildStr = baseResource;
+    constructor(private http: HttpClient, baseResource: string, expression?: RtcQueryFilterBuilder) {
+        const contentExpression = expression != undefined ? expression.stealContent() : "";
+        this.append(baseResource + 
+            (contentExpression.length != 0 ? RtcQueryBuilder.FilterPartSeparatorStart + contentExpression + RtcQueryBuilder.FilterPartSeparatorEnd : ""));
+        this.valueBuild += RtcQueryBuilder.ResourceSeparator;
+        this.toResourceState();
     }
 
     private toValueState(isFirstValue: boolean) {
@@ -122,23 +126,42 @@ class RtcQueryBuilder {
         return this;
     }
 
-    value(value: string, expression?: RtcQueryFilterBuilder): RtcQueryBuilder {
-        const contentExpression = expression != undefined ? expression.stealContent() : "";
-        return this.append(value + 
-            (contentExpression.length != 0 ? RtcQueryBuilder.FilterPartSeparatorStart + contentExpression + RtcQueryBuilder.FilterPartSeparatorEnd : ""));
-    }
-
-    sub(value: RtcQueryBuilder): RtcQueryBuilder {
-        return this.append(value.build());
-    }
-
-    resource(): RtcQueryBuilder {
-        this.toResourceState();
-        this.buildStr += RtcQueryBuilder.ResourceSeparator;
+    value(...value: string[]): RtcQueryBuilder {
+        value.forEach((val) => this.append(val));
         return this;
     }
 
-    build(): string {
+    valueSub(value: RtcQueryBuilder): RtcQueryBuilder {
+        return this.append(value.build());
+    }
+
+    parameter(key: string, value: any): RtcQueryBuilder {
+        this.toResourceState();
+        this.buildStr += RtcQueryBuilder.ParameterSeparator + key + RtcQueryBuilder.ParameterKeyValueSeparator + encodeURIComponent(value + "");
+        return this;
+    }
+
+    send<T> (method: string, url: string, options?: {
+        body?: any;
+        headers?: HttpHeaders | {
+            [header: string]: string | string[];
+        };
+        observe?: 'body';
+        params?: HttpParams | {
+            [param: string]: string | string[];
+        };
+        responseType?: 'json';
+        reportProgress?: boolean;
+        withCredentials?: boolean;
+    }): Observable<T> {
+        const output = this.build();
+        options = options || {};
+        options.body = options.body || {};
+        options.body["url"] = output;
+        return this.http.request<T>(method, url, options);
+    }
+
+    private build() {
         this.toResourceState();
         let output = this.buildStr;
         this.buildStr = "";
@@ -150,8 +173,10 @@ class RtcQueryBuilder {
 @Injectable()
 export class RtcQueryBuilderService {
     
-    query(baseResource: string): RtcQueryBuilder {
-        return new RtcQueryBuilder(baseResource);
+    constructor(private http: HttpClient) {}
+
+    query(baseResource: string, expression?: RtcQueryFilterBuilder): RtcQueryBuilder {
+        return new RtcQueryBuilder(this.http, baseResource, expression);
     }
     
     expression(): RtcQueryExpressionBuilder {
