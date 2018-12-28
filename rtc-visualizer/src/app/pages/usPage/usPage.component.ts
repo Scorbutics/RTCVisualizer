@@ -1,4 +1,4 @@
-import { Component, OnInit  } from '@angular/core';
+import { Component, OnInit, Input  } from '@angular/core';
 import { RtcService } from './service/rtc.service';
 import { Observable } from 'rxjs';
 import { UsItem } from './logindata.model';
@@ -10,6 +10,8 @@ import { switchMap, map } from 'rxjs/operators';
 	styleUrls: ['./usPage.component.less']
 })
 export class UsPageComponent implements OnInit {
+	groupFilter: string = "state";
+	sortFilter: string = "state";
 	
 	usSprint: Observable<UsItem[]>;
 	iterations: Observable<any[]>;
@@ -22,8 +24,6 @@ export class UsPageComponent implements OnInit {
 	];
 
 	ngOnInit(): void {
-
-
 		this.iterations = this.route.paramMap.pipe(
 			switchMap((pathParams: ParamMap) => {
 				const id = pathParams.get("iterationid"); 

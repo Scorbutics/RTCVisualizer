@@ -1,15 +1,24 @@
-<div class="row" style="padding-bottom:40px" *ngIf="iterations | async as iterationsSync">
+<div class="row"  *ngIf="iterations | async as iterationsSync">
 	<card *ngFor="let it of iterationsSync">
 		{{it.name}}
 	</card>
 </div>
-<div class="row" *ngIf="(usSprint | async) as usSync; else loading">
+<div>
+	Group
+	<input [(ngModel)]="groupFilter" name="Group">
+	Sort
+	<input [(ngModel)]="sortFilter" name="Sort">
+</div>
+<div style="padding-top:40px" *ngIf="(usSprint | async) as usSync; else loading">
 	<ng-container *ngIf="usSync.length; else noItems">
-		<card *ngFor="let us of usSync" [className]="getClassFromUsState(us.state)">
-			{{us.category?.name}}
-			<p>{{us.type}}
-			{{us.id}} - {{us.summary}}</p>
-		</card>
+		<div class="row" *ngFor="let usGroup of (usSync | groupBy:groupFilter)">
+			<div>{{usGroup.key}}</div>
+			<card *ngFor="let us of (usGroup.value | orderBy:sortFilter)" [className]="getClassFromUsState(us.state)">
+				{{us.category?.name}}
+				<p>{{us.type}}
+				{{us.id}} - {{us.summary}}</p>
+			</card>
+		</div>
 	</ng-container>
 	<ng-template #noItems>No Items!</ng-template>
 </div>

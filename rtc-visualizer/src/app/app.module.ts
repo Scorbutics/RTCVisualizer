@@ -22,6 +22,9 @@ import { RtcService } from './pages/usPage/service/rtc.service';
 import {LoginService} from './pages/usPage/service/login.service';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 import { RtcQueryBuilderService } from './pages/usPage/service/rtcQueryBuilder.service';
+import { GroupByPipe } from './pipe/group-by.pipe';
+import { FormsModule } from '@angular/forms';
+import { OrderByPipe } from './pipe/order-by.pipe';
 
 const routes: Routes = [
 	//TODO
@@ -45,13 +48,16 @@ const routes: Routes = [
 		TimelineComponent,
 		TimelineEntryComponent,
 		CardComponent,
-		CardDeckComponent
+		CardDeckComponent,
+		GroupByPipe,
+		OrderByPipe
 	],
 	imports: [
 		NgbModule.forRoot(),
 		RouterModule.forRoot(routes),
 		BrowserModule,
-		HttpClientModule
+		HttpClientModule,
+		FormsModule
 	],
 	providers: [
 		PageTitleService,
