@@ -25,10 +25,18 @@ export class RtcService {
     private rootTarget = "/rpt/repository/";
 
     getTeamArea(team?: string) {
-        return this.builder.query(this.hostTarget + this.rootTarget + 'foundation?fields='+ "teamArea")
-             .valueSub(this.builder.query("teamArea", this.builder.expression().maybe(team != undefined).criteria("name", "=", team))
-                .value("name", "qualifiedName", "teamMembers/name", "projectArea", "parentTeamArea/name")
-             ).parameter("size", 1000)
+        return this.builder.query(this.hostTarget + this.rootTarget + 'foundation?fields=teamArea/teamArea', 
+            this.builder.expression().maybe(team != undefined).criteria("name", "=", team))
+            .value("name", "qualifiedName", "teamMembers/name", "projectArea", "parentTeamArea/name")
+            .parameter("size", 1000)
+        .send("post", this.host + this.root);
+     }
+
+     getChildrenIterations(parent: string) {
+        return this.builder.query(this.hostTarget + this.rootTarget + "foundation?fields=iteration/iteration", 
+            this.builder.expression().criteria("name", "=", parent).and.criteria("archived", "=", "false"))
+            .valueSub(this.builder.query("children", this.builder.expression().criteria("archived", "=", "false")).value("name", "id", "startDate", "endDate"))
+            .parameter("size", 1000)
         .send("post", this.host + this.root);
      }
 
@@ -49,23 +57,38 @@ export class RtcService {
         return categoryName;
      }
 
-    getAllUs(project: string, sprint: string, team?: string, state?: string): Observable<UsItem[]> {
+    getAllUs(project: string, iterations: any[], team?: string, state?: string): Observable<UsItem[]> {
+        if(iterations.length == 0) {
+            return new Observable<UsItem[]>();
+        }
+        
+        const allExtensionsValue = 
+        this.builder.query("allExtensions", this.builder.expression()
+            .criteria("key", "=", "com.ibm.team.workitem.attribute.storyPointsNumeric")
+            .or.criteria("key", "=", "com.ibm.team.workitem.attribute.safeWorkType"))
+        .value("key", "displayValue");
+        
+
+        
+        let iterationExpression = this.builder.expression().criteria("target/name", "=", iterations[0].name);
+        iterations.forEach((value, index) => {
+            if(index > 0) {
+                iterationExpression = iterationExpression.or.criteria("target/name", "=", value.name)
+            }
+        });
+
+        let usConditionExpression = this.builder.expression()
+        .criteria("type/id", "=", "com.ibm.team.apt.workItemType.story")
+        .maybe(state != null && state.length > 0)
+        .and.criteria("state/id", "=", "com.ibm.team.apt.storyWorkflow.state." + state)
+        .and.criteria("projectArea/name", "=", project)
+        .and.group(iterationExpression);
+
         const observableUsRequest = this.builder.query(
-                this.hostTarget + this.rootTarget + "workitem?fields=workitem/workItem", 
-                this.builder.expression()
-                    .criteria("type/id", "=", "com.ibm.team.apt.workItemType.story")
-                    .maybe(state != null && state.length > 0)
-                    .and.criteria("state/id", "=", "com.ibm.team.apt.storyWorkflow.state." + state)
-                    .and.criteria("projectArea/name", "=", project)
-                    .and.criteria("target/name", "=", "Sprint " + sprint)
-                )
+                this.hostTarget + this.rootTarget + "workitem?fields=workitem/workItem", usConditionExpression)
                 .value("id", "summary", "state/id", "category/name", "teamArea/name")
-                .valueSub(this.builder.query("parent").value("id", "summary"))
-                .valueSub(this.builder.query("allExtensions", this.builder.expression()
-                        .criteria("key", "=", "com.ibm.team.workitem.attribute.storyPointsNumeric")
-                        .or.criteria("key", "=", "com.ibm.team.workitem.attribute.safeWorkType"))
-                    .value("key", "displayValue")
-                )
+                //.valueSub(this.builder.query("parent").value("id", "summary"))
+                .valueSub(allExtensionsValue)
             .parameter("size", 5000)
             .send<WorkItemContainerRoot>("post", this.host + this.root);
 

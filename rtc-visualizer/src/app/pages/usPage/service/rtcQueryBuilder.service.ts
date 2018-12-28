@@ -7,6 +7,9 @@ class RtcQueryExpressionBuilder {
         string: "'"
     };
     
+    private static GroupValueSeparatorStart = '(';
+    private static GroupValueSeparatorEnd = ')';
+
     constructor(private build: string, private valid = true) {}
     
     criteria(key: string, operator: string, value: any): RtcQueryFilterBuilder {
@@ -14,6 +17,11 @@ class RtcQueryExpressionBuilder {
             const separator = RtcQueryExpressionBuilder.ValueSeparator[typeof value] == undefined ? "" : RtcQueryExpressionBuilder.ValueSeparator[typeof value];
             this.build += key + operator + separator + encodeURIComponent(value) + separator;
         }
+        return new RtcQueryFilterBuilder(this);
+    }
+
+    group(expression: RtcQueryFilterBuilder): RtcQueryFilterBuilder {
+        this.build += RtcQueryExpressionBuilder.GroupValueSeparatorStart + expression.stealContent() + RtcQueryExpressionBuilder.GroupValueSeparatorEnd;
         return new RtcQueryFilterBuilder(this);
     }
 

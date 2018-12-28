@@ -1,3 +1,8 @@
+<div class="row" style="padding-bottom:40px" *ngIf="iterations | async as iterationsSync">
+	<card *ngFor="let it of iterationsSync">
+		{{it.name}}
+	</card>
+</div>
 <div class="row" *ngIf="(usSprint | async) as usSync; else loading">
 	<ng-container *ngIf="usSync.length; else noItems">
 		<card *ngFor="let us of usSync" [className]="getClassFromUsState(us.state)">
