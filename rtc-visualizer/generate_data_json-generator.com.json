@@ -1,0 +1,20 @@
+[
+  {
+    'repeat(35)': {
+    state: {
+      id: '{{random("com.ibm.team.apt.storyWorkflow.state.new", "com.ibm.team.apt.storyWorkflow.state.inDevelopment", "com.ibm.team.apt.storyWorkflow.state.inTest", "com.ibm.team.apt.storyWorkflow.state.done")}}'
+    },
+    teamArea: {
+      name: "test"
+    },
+    allExtensions: [
+      { displayValue : '' },
+      {
+        displayValue: '{{random("Business", "NFR")}}'
+      }
+    ],
+    id: '{{index()}}',
+	summary: '{{lorem(1, "sentence")}}'
+  	}
+  }
+]

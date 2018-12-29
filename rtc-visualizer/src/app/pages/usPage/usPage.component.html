@@ -3,23 +3,26 @@
 		{{it.name}}
 	</card>
 </div>
-<div>
+<div class="box">
 	Group
 	<input [(ngModel)]="groupFilter" name="Group">
 	Sort
 	<input [(ngModel)]="sortFilter" name="Sort">
 </div>
-<div style="padding-top:40px" *ngIf="(usSprint | async) as usSync; else loading">
-	<ng-container *ngIf="usSync.length; else noItems">
-		<div class="row" *ngFor="let usGroup of (usSync | groupBy:groupFilter)">
-			<div>{{usGroup.key}}</div>
-			<card *ngFor="let us of (usGroup.value | orderBy:sortFilter)" [className]="getClassFromUsState(us.state)">
+<table class="box" *ngIf="(usSprint | async) as usSync; else loading">
+	<div *ngIf="usSync.length; else noItems">
+		<tr *ngFor="let usGroup of (usSync | groupBy:groupFilter)">
+			<td>{{getGroup(usGroup)}}</td>
+			<td *ngFor="let us of (usGroup.value | orderBy:sortFilter)" [className]="getClassFromUsState(us.state)" >
 				{{us.category?.name}}
-				<p>{{us.type}}
-				{{us.id}} - {{us.summary}}</p>
-			</card>
-		</div>
-	</ng-container>
-	<ng-template #noItems>No Items!</ng-template>
-</div>
+				<div>
+					<ng-container *ngIf="groupFilter != 'type'">{{us.type}} </ng-container>
+					<ng-container *ngIf="groupFilter != 'id'">{{us.id}} </ng-container>
+					<ng-container *ngIf="groupFilter != 'summary'">{{us.summary}} </ng-container>
+				</div>
+			</td>
+		</tr>
+	</div>
+</table>
+<ng-template #noItems>No Items!</ng-template>
 <ng-template #loading>Loading data...</ng-template>

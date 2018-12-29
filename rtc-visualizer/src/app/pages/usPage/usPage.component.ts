@@ -1,7 +1,7 @@
 import { Component, OnInit, Input  } from '@angular/core';
 import { RtcService } from './service/rtc.service';
 import { Observable } from 'rxjs';
-import { UsItem } from './logindata.model';
+import { UsItem, ItemState } from './logindata.model';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap, map } from 'rxjs/operators';
 @Component({
@@ -55,6 +55,13 @@ export class UsPageComponent implements OnInit {
 	}
 
 	constructor(private rtcService: RtcService, private route: ActivatedRoute) { }
+
+	getGroup(usGroup: any) {
+		if(this.groupFilter == "state") {
+			return ItemState[parseInt(usGroup.key)];
+		}
+		return usGroup.key;
+	}
 
 	getClassFromUsState(state: number): string {
 		return UsPageComponent.ClassStateMap[state];
