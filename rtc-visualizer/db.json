@@ -1,0 +1,41 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  },
+  "rpt-repository-foundation-iteration-iteration": {
+    "data": {
+      "foundation": {
+        "iteration": [
+          {
+            "name": "test",
+            "children": [
+              {
+                "name": "tutu",
+                "id": "toutou"
+              }
+            ],
+            "id": "toto"
+          }
+        ]
+      }
+    }
+  },
+  "rpt-repository-workitem-workitem-workItem": {},
+  "api": {
+    "url": "https://ccm001-jazzx.sii24.pole-emploi.intra:9443/ccm/rpt/repository/workitem?fields=workitem/workItem[type/id='com.ibm.team.apt.workItemType.story' and projectArea/name='D2IA%20-%20Delivery' and (target/name='tutu')]/(id|summary|state/id|category/name|teamArea/name|allExtensions[key='com.ibm.team.workitem.attribute.storyPointsNumeric' or key='com.ibm.team.workitem.attribute.safeWorkType']/(key|displayValue))&size=5000"
+  }
+}
