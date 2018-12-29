@@ -4,9 +4,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { LoginService } from './login.service';
-import { RtcQueryBuilderService } from './rtcQueryBuilder.service';
+
 import { WorkItem, ItemStateMap, UsItem } from '../logindata.model';
 import { map } from 'rxjs/operators';
+import { RtcQueryService } from 'rtcquery-api';
  
 interface WorkItemContainerRoot {
     data : { workitem: { workItem: Array<WorkItem>} }
@@ -15,7 +16,7 @@ interface WorkItemContainerRoot {
 @Injectable()
 export class RtcService {
  
-    constructor(private http:HttpClient, private loginService: LoginService, private builder: RtcQueryBuilderService) {}
+    constructor(private http:HttpClient, private loginService: LoginService, private builder: RtcQueryService) {}
  
     //TODO http request interceptor for base URL
     private host = "http://localhost:1337";
@@ -67,9 +68,7 @@ export class RtcService {
             .criteria("key", "=", "com.ibm.team.workitem.attribute.storyPointsNumeric")
             .or.criteria("key", "=", "com.ibm.team.workitem.attribute.safeWorkType"))
         .value("key", "displayValue");
-        
 
-        
         let iterationExpression = this.builder.expression().criteria("target/name", "=", iterations[0].name);
         iterations.forEach((value, index) => {
             if(index > 0) {
@@ -92,7 +91,7 @@ export class RtcService {
             .parameter("size", 5000)
             .send<WorkItemContainerRoot>("post", this.host + this.root);
 
-        return observableUsRequest.pipe(map((value, index) => { 
+        return observableUsRequest.pipe(map((value: any, index) => { 
             if(value.data.workitem.workItem == undefined) {
                 return [];
             }

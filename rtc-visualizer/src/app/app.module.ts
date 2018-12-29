@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Routes, RouterModule } from "@angular/router";
 import { HttpClientModule } from '@angular/common/http';
+import { RTCQueryAPIModule } from 'rtcquery-api';
 
 //User defined
 //TODO plusieurs modules
@@ -21,10 +22,10 @@ import {CardDeckComponent} from './cards/cardDeck.component';
 import { RtcService } from './pages/usPage/service/rtc.service';
 import {LoginService} from './pages/usPage/service/login.service';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
-import { RtcQueryBuilderService } from './pages/usPage/service/rtcQueryBuilder.service';
 import { GroupByPipe } from './pipe/group-by.pipe';
 import { FormsModule } from '@angular/forms';
 import { OrderByPipe } from './pipe/order-by.pipe';
+import {RtcQueryService} from 'rtcquery-api';
 
 const routes: Routes = [
 	//TODO
@@ -57,14 +58,15 @@ const routes: Routes = [
 		RouterModule.forRoot(routes),
 		BrowserModule,
 		HttpClientModule,
-		FormsModule
+		FormsModule,
+		RTCQueryAPIModule
 	],
 	providers: [
 		PageTitleService,
 		RtcService,
 		LoginService,
 		CookieService,
-		RtcQueryBuilderService
+		RtcQueryService
 	],
 	bootstrap: [AppComponent]
 })
