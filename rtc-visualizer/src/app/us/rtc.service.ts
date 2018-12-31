@@ -1,13 +1,12 @@
 
 
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { LoginService } from './login.service';
 
-import { WorkItem, ItemStateMap, UsItem } from '../logindata.model';
+import { UsItem } from './us.model';
 import { map } from 'rxjs/operators';
 import { RtcQueryService } from 'rtcquery-api';
+import { WorkItem, ItemStateMap } from '../models/workitem.model';
  
 interface WorkItemContainerRoot {
     data : { workitem: { workItem: Array<WorkItem>} }
@@ -16,7 +15,7 @@ interface WorkItemContainerRoot {
 @Injectable()
 export class RtcService {
  
-    constructor(private http:HttpClient, private loginService: LoginService, private builder: RtcQueryService) {}
+    constructor(private builder: RtcQueryService) {}
  
     //TODO http request interceptor for base URL
     private host = "http://localhost:1337";

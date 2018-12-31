@@ -1,9 +1,12 @@
-import { Component, OnInit, Input  } from '@angular/core';
-import { RtcService } from './service/rtc.service';
+import { Component, OnInit  } from '@angular/core';
+import { RtcService } from './rtc.service';
 import { Observable } from 'rxjs';
-import { UsItem, ItemState } from './logindata.model';
+import { UsItem } from './us.model';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap, map } from 'rxjs/operators';
+import { ItemState } from '../models/workitem.model';
+
+
 @Component({
 	selector: 'us-page',
 	templateUrl: './usPage.component.html',

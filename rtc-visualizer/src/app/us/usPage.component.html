@@ -1,15 +1,15 @@
-<div class="row"  *ngIf="iterations | async as iterationsSync">
+<div *ngIf="iterations | async as iterationsSync">
 	<card *ngFor="let it of iterationsSync">
 		{{it.name}}
 	</card>
 </div>
-<div class="box">
+<div>
 	Group
 	<input [(ngModel)]="groupFilter" name="Group">
 	Sort
 	<input [(ngModel)]="sortFilter" name="Sort">
 </div>
-<table class="box" *ngIf="(usSprint | async) as usSync; else loading">
+<table *ngIf="(usSprint | async) as usSync; else loading">
 	<div *ngIf="usSync.length; else noItems">
 		<tr *ngFor="let usGroup of (usSync | groupBy:groupFilter)">
 			<td>{{getGroup(usGroup)}}</td>
