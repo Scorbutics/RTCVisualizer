@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { UsItem } from './us.model';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap, map } from 'rxjs/operators';
-import { ItemState } from '../models/workitem.model';
+import { ItemState, ItemStateMap } from '../models/workitem.model';
 
 
 @Component({
@@ -61,7 +61,7 @@ export class UsPageComponent implements OnInit {
 
 	getGroup(usGroup: any) {
 		if(this.groupFilter == "state") {
-			return ItemState[parseInt(usGroup.key)];
+			return ItemStateMap.reversemap[parseInt(usGroup.key)];
 		}
 		return usGroup.key;
 	}

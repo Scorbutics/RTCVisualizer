@@ -12,6 +12,13 @@ export class ItemStateMap {
         "com.ibm.team.apt.storyWorkflow.state.inTest" : ItemState.InTest,
         "com.ibm.team.apt.storyWorkflow.state.done" : ItemState.Done
     };
+
+    public static reversemap = {
+        0: "Prêt",
+        1: "En développement",
+        2: "En test",
+        3: "Réalisé"
+    };
 }
 
 export interface State {

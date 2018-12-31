@@ -10,6 +10,7 @@ export class GroupByPipe implements PipeTransform {
     var groups = arrayToGroup.reduce(function(accu, item) {
         let key = item;
         fields.forEach((value) => key = key[value]);
+        key = key || "";
 		    accu[key] = accu[key] || [];
         accu[key].push(item);
         return accu;
