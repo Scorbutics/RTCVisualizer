@@ -10,7 +10,7 @@ import { ItemState, ItemStateMap } from '../models/workitem.model';
 @Component({
 	selector: 'us-page',
 	templateUrl: './usPage.component.html',
-	styleUrls: ['./usPage.component.less']
+	styleUrls: ['./usPage.component.scss']
 })
 export class UsPageComponent implements OnInit {
 	groupFilter: string = "state";
@@ -25,6 +25,11 @@ export class UsPageComponent implements OnInit {
 		"card-test",
 		"card-done"
 	];
+
+	private static ClassTypeMap = {
+		"US" : "card-us",
+		"TS" : "card-ts"
+	};
 
 	ngOnInit(): void {
 		this.iterations = this.route.paramMap.pipe(
@@ -68,5 +73,9 @@ export class UsPageComponent implements OnInit {
 
 	getClassFromUsState(state: number): string {
 		return UsPageComponent.ClassStateMap[state];
+	}
+	
+	getClassFromStoryType(storyType: string): string {
+		return UsPageComponent.ClassTypeMap[storyType];
 	}
 }

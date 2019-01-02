@@ -22,8 +22,22 @@ card-deck {
     background-color: lightgreen
 }
 
+.card-us {
+    color: yellow;
+    font-weight: bold;
+}
+
+.card-ts {
+    color: blue;
+    font-weight: bold;
+}
+
 .cell {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+}
+
+.align-center {
+    text-align: center
 }

@@ -1,32 +1,35 @@
+<h2 class="h1-responsive font-weight-bold text-center my-5">Stories</h2>
 <div *ngIf="iterations | async as iterationsSync">
-	<card *ngFor="let it of iterationsSync">
+	<!--
+	<div *ngFor="let it of iterationsSync">
 		{{it.name}}
-	</card>
+	</div>
+	-->
 </div>
-<div>
-	Group
-	<input [(ngModel)]="groupFilter" name="Group">
-	Sort
-	<input [(ngModel)]="sortFilter" name="Sort">
-</div>
-<div class="container" *ngIf="(usSprint | async) as usSync; else loading">
-	<div *ngIf="usSync.length; else noItems">
-		<div class="row" *ngFor="let usGroup of (usSync | groupBy:groupFilter)">
-			<div class="col-sm-2 cell">
-				{{getGroup(usGroup)}}
-			</div>
-			<div class="col-sm-10">
-				<div *ngFor="let us of (usGroup.value | orderBy:sortFilter)" [className]="getClassFromUsState(us.state)">
-					{{us.category?.name}}
-					<div>
-						{{us.type}}
-						{{us.id}}
-						{{us.summary}}
+<div class="container-fluid">
+	<div *ngIf="(usSprint | async) as usSync; else loading">
+		<div class="row">
+			<div class="col-sm-2 cell">Group</div><input class="col-sm-10" [(ngModel)]="groupFilter" name="Group">
+		</div>
+		<div class="row">
+			<div class="col-sm-2 cell">Sort</div><input class="col-sm-10" [(ngModel)]="sortFilter" name="Sort">
+		</div>
+		
+		<div *ngIf="usSync.length; else noItems">
+			<div class="row" *ngFor="let usGroup of (usSync | groupBy:groupFilter)">
+				<div class="col-sm-2 cell">
+					{{getGroup(usGroup)}}
+				</div>
+				<div class="col-sm-10 container-fluid">
+					<div *ngFor="let us of (usGroup.value | orderBy:sortFilter)" [className]="getClassFromUsState(us.state) + ' row'">
+						<strong class="col-sm-1 cell">{{us.category?.name}}</strong><div [className]="getClassFromStoryType(us.type) + ' col-sm-1'">{{us.id}}</div><div class="col-sm">{{us.summary}}</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+	<div class="row">
+		<ng-template #noItems>No Items!</ng-template>
+		<div class="col-sm align-center"><div class="loader border-top-danger" style="display:inline-block"></div></div>
+	</div>
 </div>
-<ng-template #noItems>No Items!</ng-template>
-<ng-template #loading>Loading data...</ng-template>
