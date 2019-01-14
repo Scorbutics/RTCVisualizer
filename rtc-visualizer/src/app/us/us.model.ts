@@ -7,5 +7,6 @@ export interface UsItem {
     teamArea: TeamArea;
     category: Category;
     id: string;
-    summary: string
+    summary: string;
+    storyPoints: number;
 }

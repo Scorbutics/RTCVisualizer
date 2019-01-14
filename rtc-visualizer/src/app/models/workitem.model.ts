@@ -52,3 +52,7 @@ export interface WorkItem {
     summary: string,
     parent: WorkItem
 }
+
+export interface Iteration {
+    name: string;
+}

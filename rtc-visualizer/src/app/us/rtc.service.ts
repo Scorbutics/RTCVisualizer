@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { UsItem } from './us.model';
 import { map } from 'rxjs/operators';
 import { RtcQueryService } from 'rtcquery-api';
-import { WorkItem, ItemStateMap } from '../models/workitem.model';
+import { WorkItem, ItemStateMap, Iteration } from '../models/workitem.model';
  
 interface WorkItemContainerRoot {
     data : { workitem: { workItem: Array<WorkItem>} }
@@ -57,15 +57,16 @@ export class RtcService {
         return categoryName;
      }
 
-    getAllUs(project: string, iterations: any[], team?: string, state?: string): Observable<UsItem[]> {
+    getAllUs(project: string, iterations: Iteration[], team?: string, state?: string): Observable<UsItem[]> {
         if(iterations.length == 0) {
             return new Observable<UsItem[]>();
         }
         
         const allExtensionsValue = 
         this.builder.query("allExtensions", this.builder.expression()
-            .criteria("key", "=", "com.ibm.team.workitem.attribute.storyPointsNumeric")
-            .or.criteria("key", "=", "com.ibm.team.workitem.attribute.safeWorkType"))
+            .criteria("key", "=", "com.ibm.team.apt.attribute.complexity")
+            .or.criteria("key", "=", "com.ibm.team.workitem.attribute.safeWorkType")
+            .or.criteria("key", "=", "VersionMEP"))
         .value("key", "displayValue");
 
         let iterationExpression = this.builder.expression().criteria("target/name", "=", iterations[0].name);
@@ -81,11 +82,11 @@ export class RtcService {
         .and.criteria("state/id", "=", "com.ibm.team.apt.storyWorkflow.state." + state)
         .and.criteria("projectArea/name", "=", project)
         .and.group(iterationExpression);
-
+        
         const observableUsRequest = this.builder.query(
                 this.hostTarget + this.rootTarget + "workitem?fields=workitem/workItem", usConditionExpression)
                 .value("id", "summary", "state/id", "category/name", "teamArea/name")
-                //.valueSub(this.builder.query("parent").value("id", "summary"))
+                //.valueSub(this.builder.query("parent").value("id"))
                 .valueSub(allExtensionsValue)
             .parameter("size", 5000)
             .send<WorkItemContainerRoot>("post", this.host + this.root);
@@ -103,7 +104,8 @@ export class RtcService {
                     category: (value.category ? {name : this.formatCategoryName(value.category.name)} : undefined),
                     id: value.id,
                     summary: value.summary,
-                    type : value.allExtensions[1].displayValue == "Business" ? "US" : "TS"
+                    storyPoints: value.allExtensions.find(element => element.key == "com.ibm.team.apt.attribute.complexity").displayValue,
+                    type : value.allExtensions.find(element => element.key == "com.ibm.team.workitem.attribute.safeWorkType").displayValue == "Business" ? "US" : "TS"
                 };
             });
         }));

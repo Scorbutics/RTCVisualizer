@@ -22,7 +22,9 @@
 				</div>
 				<div class="col-sm-10 container-fluid">
 					<div *ngFor="let us of (usGroup.value | orderBy:sortFilter)" [className]="getClassFromUsState(us.state) + ' row'">
-						<strong class="col-sm-1 cell">{{us.category?.name}}</strong><div [className]="getClassFromStoryType(us.type) + ' col-sm-1'">{{us.id}}</div><div class="col-sm">{{us.summary}}</div>
+						<strong class="col-sm-1 cell">{{us.category?.name}}</strong><div [className]="getClassFromStoryType(us.type) + ' col-sm-1'">{{us.id}}</div>
+						<div class="col-sm-1">{{us.storyPoints}}</div>
+						<div class="col-sm">{{us.summary}}</div>
 					</div>
 				</div>
 			</div>
@@ -30,6 +32,8 @@
 	</div>
 	<div class="row">
 		<ng-template #noItems>No Items!</ng-template>
-		<div class="col-sm align-center"><div class="loader border-top-danger" style="display:inline-block"></div></div>
 	</div>
+	<ng-template class="row" #loading>
+		<div class="col-sm align-center"><div class="loader border-top-danger" style="display:inline-block"></div></div>
+	</ng-template>
 </div>

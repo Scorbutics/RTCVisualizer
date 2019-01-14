@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { UsItem } from './us.model';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap, map } from 'rxjs/operators';
-import { ItemState, ItemStateMap } from '../models/workitem.model';
+import { ItemState, ItemStateMap, Iteration } from '../models/workitem.model';
 
 
 @Component({
@@ -17,7 +17,7 @@ export class UsPageComponent implements OnInit {
 	sortFilter: string = "state";
 	
 	usSprint: Observable<UsItem[]>;
-	iterations: Observable<any[]>;
+	iterations: Observable<Iteration[]>;
 
 	private static ClassStateMap = [
 		"card-ready",
@@ -37,7 +37,7 @@ export class UsPageComponent implements OnInit {
 				const id = pathParams.get("iterationid"); 
 				return !id ? [] : this.rtcService.getChildrenIterations(id).pipe(map((value: any) => {
 					if(!value.data || !value.data.foundation || !value.data.foundation || !value.data.foundation.iteration || value.data.foundation.iteration.length == 0) {
-						return [id];
+						return [{name : id}];
 					}
 
 					const result = (<any[]> value.data.foundation.iteration).reduce((accu, currentValue, index, array) => {
@@ -50,7 +50,8 @@ export class UsPageComponent implements OnInit {
 						}
 						return accu;
 					}, {});
-					return Object.values(result);
+					const arrayResult = Object.values(result);
+					return arrayResult.length == 0 ? [{name : id}] : arrayResult;
 				}));
 			}
 		));
