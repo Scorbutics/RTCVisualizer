@@ -9,4 +9,14 @@ export interface UsItem {
     id: string;
     summary: string;
     storyPoints: number;
+    children: TaskItem[];
+    childrenLoaded: boolean;
+}
+
+export interface TaskItem {
+    id: string;
+    summary: string;
+    estimate: number;
+    timeSpent: number;
+    iteration: string;
 }

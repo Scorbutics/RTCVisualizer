@@ -22,9 +22,21 @@
 				</div>
 				<div class="col-sm-10 container-fluid">
 					<div *ngFor="let us of (usGroup.value | orderBy:sortFilter)" [className]="getClassFromUsState(us.state) + ' row'">
-						<strong class="col-sm-1 cell">{{us.category?.name}}</strong><div [className]="getClassFromStoryType(us.type) + ' col-sm-1'">{{us.id}}</div>
+						<strong class="col-sm-1 cell">{{us.category?.name}}</strong>
+						<a target="_blank" rel="noopener noreferrer" [className]="getClassFromStoryType(us.type) + ' col-sm-1'" [href]="'https://ccm001-jazzx.sii24.pole-emploi.intra:9443/ccm/web/projects/' + getContainerURL() + '#action=com.ibm.team.workitem.viewWorkItem&id=' + us.id">{{us.id}}</a>
 						<div class="col-sm-1">{{us.storyPoints}}</div>
 						<div class="col-sm">{{us.summary}}</div>
+						<div class="container">
+							<div>
+								<div *ngFor="let task of us.children" class="row">
+									<a target="_blank" rel="noopener noreferrer" [className]="col-sm-1" [href]="'https://ccm001-jazzx.sii24.pole-emploi.intra:9443/ccm/web/projects/' + getContainerURL() + '#action=com.ibm.team.workitem.viewWorkItem&id=' + us.id">{{us.id}}</a>
+									<div class="col-sm-1">{{task.estimate}}</div>
+									<div class="col-sm-1">{{task.timeSpent}}</div>
+									<div class="col-sm">{{task.summary}}</div>
+									<div class="col-sm">{{task.iteration}}</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -36,4 +48,5 @@
 	<ng-template class="row" #loading>
 		<div class="col-sm align-center"><div class="loader border-top-danger" style="display:inline-block"></div></div>
 	</ng-template>
+
 </div>

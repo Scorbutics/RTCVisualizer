@@ -1,10 +1,10 @@
-import { Component, OnInit  } from '@angular/core';
+import { Component, OnInit, OnDestroy  } from '@angular/core';
 import { RtcService } from './rtc.service';
-import { Observable } from 'rxjs';
-import { UsItem } from './us.model';
+import { Observable, Subscription } from 'rxjs';
+import { UsItem, TaskItem } from './us.model';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap, map } from 'rxjs/operators';
-import { ItemState, ItemStateMap, Iteration } from '../models/workitem.model';
+import { ItemStateMap, Iteration } from '../models/workitem.model';
 
 
 @Component({
@@ -12,12 +12,14 @@ import { ItemState, ItemStateMap, Iteration } from '../models/workitem.model';
 	templateUrl: './usPage.component.html',
 	styleUrls: ['./usPage.component.scss']
 })
-export class UsPageComponent implements OnInit {
+export class UsPageComponent implements OnInit, OnDestroy {
 	groupFilter: string = "state";
 	sortFilter: string = "state";
 	
 	usSprint: Observable<UsItem[]>;
+	taskSubscription: Subscription;
 	iterations: Observable<Iteration[]>;
+	teamArea: string;
 
 	private static ClassStateMap = [
 		"card-ready",
@@ -58,12 +60,22 @@ export class UsPageComponent implements OnInit {
 
 		this.usSprint = this.iterations.pipe(switchMap((it) => 
 			this.route.queryParamMap.pipe(switchMap((queryParams: ParamMap) => {
-				return this.rtcService.getAllUs('D2IA - Delivery', it, queryParams.get('team'));
+				this.teamArea = queryParams.get('team');
+				return this.rtcService.getAllUs(this.getContainer(), it, this.teamArea);
 			}
-		))));
+		))))
+		.pipe(switchMap((it) => this.rtcService.completeChildren(it)));
 	}
 
 	constructor(private rtcService: RtcService, private route: ActivatedRoute) { }
+
+	getContainer() {
+		return 'D2IA - Delivery';
+	}
+
+	getContainerURL() {
+		return encodeURIComponent(this.getContainer());
+	}
 
 	getGroup(usGroup: any) {
 		if(this.groupFilter == "state") {
@@ -78,5 +90,9 @@ export class UsPageComponent implements OnInit {
 	
 	getClassFromStoryType(storyType: string): string {
 		return UsPageComponent.ClassTypeMap[storyType];
+	}
+
+	ngOnDestroy(): void {
+		this.taskSubscription.unsubscribe();
 	}
 }

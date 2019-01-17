@@ -50,7 +50,8 @@ export interface WorkItem {
     category: Category;
     id: string;
     summary: string,
-    parent: WorkItem
+    parent: WorkItem,
+    children: WorkItem[]
 }
 
 export interface Iteration {

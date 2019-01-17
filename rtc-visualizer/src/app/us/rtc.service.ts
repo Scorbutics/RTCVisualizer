@@ -3,10 +3,11 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { UsItem } from './us.model';
+import { UsItem, TaskItem } from './us.model';
 import { map } from 'rxjs/operators';
 import { RtcQueryService } from 'rtcquery-api';
 import { WorkItem, ItemStateMap, Iteration } from '../models/workitem.model';
+import { Expression } from '@angular/compiler';
  
 interface WorkItemContainerRoot {
     data : { workitem: { workItem: Array<WorkItem>} }
@@ -86,7 +87,7 @@ export class RtcService {
         const observableUsRequest = this.builder.query(
                 this.hostTarget + this.rootTarget + "workitem?fields=workitem/workItem", usConditionExpression)
                 .value("id", "summary", "state/id", "category/name", "teamArea/name")
-                //.valueSub(this.builder.query("parent").value("id"))
+                .valueSub(this.builder.query("children").value("id"))
                 .valueSub(allExtensionsValue)
             .parameter("size", 5000)
             .send<WorkItemContainerRoot>("post", this.host + this.root);
@@ -105,9 +106,61 @@ export class RtcService {
                     id: value.id,
                     summary: value.summary,
                     storyPoints: value.allExtensions.find(element => element.key == "com.ibm.team.apt.attribute.complexity").displayValue,
-                    type : value.allExtensions.find(element => element.key == "com.ibm.team.workitem.attribute.safeWorkType").displayValue == "Business" ? "US" : "TS"
+                    type : value.allExtensions.find(element => element.key == "com.ibm.team.workitem.attribute.safeWorkType").displayValue == "Business" ? "US" : "TS",
+                    children : value.children || new Array()
                 };
             });
+        }));
+    }
+
+    completeChildren(us: UsItem[]) : Observable<UsItem[]> {
+        if(us.length == 0) {
+            return new Observable<UsItem[]>();
+        }
+
+        let usExpressionCondition = this.builder.expression().criteria("type/id", "=", "com.ibm.team.workitem.workItemType.task");
+        
+        let usAsParentExpressionCondition;
+        us.forEach((usValue, index) => {
+            for(let i = 0; i < usValue.children.length; i++) {
+                let value = usValue.children[i];
+                if(index > 0) {
+                    usAsParentExpressionCondition = usAsParentExpressionCondition.or.criteria("id", "=", value.id);
+                } else {
+                    usAsParentExpressionCondition = this.builder.expression().criteria("id", "=", value.id);
+                }
+            }
+        });
+        usExpressionCondition = usExpressionCondition.and.group(usAsParentExpressionCondition);
+
+        const request = this.builder.query(this.hostTarget + this.rootTarget + "workitem?fields=workitem/workItem", usExpressionCondition)
+        .value("id", "summary", "duration", "timeSpent", "target/name")
+        .parameter("size", 5000)
+        .send<WorkItemContainerRoot>("post", this.host + this.root);
+
+        return request.pipe(map((value: any) => { 
+            if(value.data.workitem.workItem == undefined) {
+                return [];
+            }
+            const result = value.data.workitem.workItem.map(value => {
+                return {
+                    id: value.id,
+                    summary: value.summary,
+                    estimate: value.estimate,
+                    timeSpent: value.timeSpent,
+                    iteration: value.target.name
+                };
+            });
+
+            us.forEach((usValue) => {
+                const usChildrenIds = [];
+                for(let i = 0; i < usValue.children.length; i++) {
+                    usChildrenIds.push(usValue.children[i].id);
+                }
+                usValue.children = result.filter(task => usChildrenIds.indexOf(task.id) != -1);
+            });
+
+            return us;
         }));
     }
 }
